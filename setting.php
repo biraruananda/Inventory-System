@@ -466,4 +466,4 @@ foreach ($default_settings as $key => $value) {
         }
     </script>
 </body>
-</html
+</html>

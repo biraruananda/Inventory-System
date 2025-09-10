@@ -1218,4 +1218,4 @@ $view_mode = isset($_GET['view']) ? $_GET['view'] : 'table';
         });
     </script>
 </body>
-</html
+</html>
