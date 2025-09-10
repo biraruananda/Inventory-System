@@ -1,4 +1,4 @@
- <?php
+<?php
 session_start();
 if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
@@ -9,6 +9,7 @@ require_once 'config.php';
 
 // Check user role from session
 $is_admin = isset($_SESSION['role']) && $_SESSION['role'] === 'admin';
+$is_user = isset($_SESSION['role']) && $_SESSION['role'] === 'user';
 
 // File upload configuration
 $upload_dir = 'uploads/';
@@ -603,14 +604,14 @@ $view_mode = isset($_GET['view']) ? $_GET['view'] : 'table';
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="profile.php">
-                            <i class="fas fa-user me-1"></i> 
-                            <?php echo isset($_SESSION['user']) ? $_SESSION['user'] : 'User'; ?>
-                            <span class="badge bg-<?php echo $is_admin ? 'warning' : 'info'; ?> ms-1">
-                                <?php echo $is_admin ? 'Admin' : 'User'; ?>
-                            </span>
-                        </a>
-                    </li>
+    <a class="nav-link" href="profile.php">
+        <i class="fas fa-user me-1"></i> 
+        <?php echo isset($_SESSION['username']) ? htmlspecialchars($_SESSION['username']) : 'Guest'; ?>
+        <span class="badge bg-<?php echo $is_admin ? 'warning' : 'info'; ?> ms-1">
+            <?php echo $is_admin ? 'Admin' : 'User'; ?>
+        </span>
+    </a>
+</li>
                     <li class="nav-item">
                         <a class="nav-link" href="setting.php"><i class="fas fa-cog me-1"></i> Settings</a>
                     </li>
@@ -662,7 +663,7 @@ $view_mode = isset($_GET['view']) ? $_GET['view'] : 'table';
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">
+                            <a class="nav-link" href="setting.php">
                                 <i class="fas fa-cog"></i> Settings
                             </a>
                         </li>
@@ -715,13 +716,12 @@ $view_mode = isset($_GET['view']) ? $_GET['view'] : 'table';
                             <p class="mb-0">Comprehensive product management system</p>
                         </div>
                         <div class="col-md-4 text-end">
-                            <button class="btn btn-light me-2" data-bs-toggle="modal" data-bs-target="#exportModal">
-                                <i class="fas fa-download me-2"></i>Export
-                            </button>
-                            <?php if ($is_admin): ?>
+                        <?php if ($is_admin): ?>
                                 <button class="btn btn-light" data-bs-toggle="modal" data-bs-target="#productModal">
                                     <i class="fas fa-plus me-2"></i>Add Product
                                 </button>
+                            <?php elseif ($is_user): ?>
+                                <span class="text-light">Read-only access</span>
                             <?php endif; ?>
                         </div>
                     </div>
@@ -812,7 +812,7 @@ $view_mode = isset($_GET['view']) ? $_GET['view'] : 'table';
                                 </select>
                             </div>
                             <div class="col-md-3">
-                                <div class="d-flex justify-content-end">
+                                <div class="col-md-12 d-flex justify-content-end gap-2">
                                     <div class="btn-group me-2">
                                         <a href="?view=table<?php echo isset($_GET['search']) ? '&search='.$_GET['search'] : ''; ?>" class="btn btn-outline-primary <?php echo $view_mode == 'table' ? 'active' : ''; ?>">
                                             <i class="fas fa-table"></i>

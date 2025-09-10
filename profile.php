@@ -1,4 +1,4 @@
- <?php
+<?php
 session_start();
 require_once 'config.php';
 
@@ -7,6 +7,9 @@ if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
     exit;
 }
+
+$is_admin = isset($_SESSION['role']) && $_SESSION['role'] === 'admin';
+$is_user = isset($_SESSION['role']) && $_SESSION['role'] === 'user';
 
 // Get current user data
 $user_id = $_SESSION['user_id'];
@@ -223,8 +226,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <a class="nav-link" href="index.php"><i class="fas fa-home me-1"></i> Dashboard</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="profile.php"><i class="fas fa-user me-1"></i> Profile</a>
-                    </li>
+    <a class="nav-link active" href="profile.php">
+        <i class="fas fa-user me-1"></i> 
+        <?php echo isset($_SESSION['username']) ? htmlspecialchars($_SESSION['username']) : 'Guest'; ?>
+        <span class="badge bg-<?php echo $is_admin ? 'warning' : 'info'; ?> ms-1">
+            <?php echo $is_admin ? 'Admin' : 'User'; ?>
+        </span>
+    </a>
+</li>
                     <li class="nav-item">
                         <a class="nav-link" href="logout.php"><i class="fas fa-sign-out-alt me-1"></i> Logout</a>
                     </li>

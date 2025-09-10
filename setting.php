@@ -1,4 +1,4 @@
- <?php
+<?php
 session_start();
 require_once 'config.php';
 
@@ -9,10 +9,8 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 // Check if user is admin (optional access control)
-$is_admin = false;
-if (isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin') {
-    $is_admin = true;
-}
+$is_admin = isset($_SESSION['role']) && $_SESSION['role'] === 'admin';
+$is_user = isset($_SESSION['role']) && $_SESSION['role'] === 'user';
 
 // Initialize variables
 $error = '';
@@ -270,8 +268,14 @@ foreach ($default_settings as $key => $value) {
                         <a class="nav-link" href="index.php"><i class="fas fa-home me-1"></i> Dashboard</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="profile.php"><i class="fas fa-user me-1"></i> Profile</a>
-                    </li>
+    <a class="nav-link" href="profile.php">
+        <i class="fas fa-user me-1"></i> 
+        <?php echo isset($_SESSION['username']) ? htmlspecialchars($_SESSION['username']) : 'Guest'; ?>
+        <span class="badge bg-<?php echo $is_admin ? 'warning' : 'info'; ?> ms-1">
+            <?php echo $is_admin ? 'Admin' : 'User'; ?>
+        </span>
+    </a>
+</li>
                     <li class="nav-item">
                         <a class="nav-link active" href="settings.php"><i class="fas fa-cog me-1"></i> Settings</a>
                     </li>
