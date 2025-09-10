@@ -1,0 +1,16 @@
+# Ignore sensitive database config
+config.php
+
+# Ignore OS generated files
+.DS_Store
+Thumbs.db
+
+# Ignore IDE/editor settings
+.vscode/
+.idea/
+
+# Ignore vendor if someday pakai composer
+/vendor/
+
+# Ignore Upload files
+/uploads/
